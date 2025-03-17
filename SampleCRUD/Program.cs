@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SampleCRUD.Service;
 using SampleCRUD.Service.Impl;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +22,42 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 });
 
 builder.Services.AddScoped<InvoiceService, InvoiceServiceImpl>();
+builder.Services.AddScoped<UserService, UserServiceImpl>();
 
 
+// Load JWT settings
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+          
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+//builder.Services.AddAuthentication(x =>
+//{
+//    x.DefaultAuthenticateScheme=
+//    x.DefaultChallengeScheme=
+//    x.DefaultScheme= JwtBearerDefaults.AuthenticationScheme;
+//}).AddJwtBearer(y =>
+//{
+//    y.SaveToken=false;
+//    new TokenValidationParameters
+//    {
+//        ValidateIssuerSigningKey = true,
+//        IssuerSigningKey = new SymmetricSecurityKey(
+//             Encoding.UTF8.GetBytes(
+//                 builder.Configuration["AppSettings:SECRET_KEY"]!))
+//    };
+//});
 
 
 var app = builder.Build();
@@ -34,6 +71,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllers();
