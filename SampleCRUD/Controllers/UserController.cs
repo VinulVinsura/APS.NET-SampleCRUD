@@ -39,5 +39,17 @@ namespace SampleCRUD.Controllers
 
             return BadRequest(responce);
         }
+
+        [HttpGet("get-all-users")]
+        public IActionResult getAll() 
+        { 
+           Responce responce= _userService.getAllUser();
+            if (responce.StatusCode == 0)
+            {
+                return Ok(responce);
+            }
+
+            return BadRequest(responce);
+        }
     }
 }

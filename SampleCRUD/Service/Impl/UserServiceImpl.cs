@@ -43,6 +43,23 @@ namespace SampleCRUD.Service.Impl
             }
         }
 
+        public Responce getAllUser()
+        {
+            try
+            {
+                List<User> users = _context.Users.ToList();
+                if (users.IsNullOrEmpty())
+                {
+                    return new Responce(01, "not exixting data", null);
+                }
+                return new Responce(00, "get all data", users);
+            }
+            catch (Exception ex) { 
+            
+                return new Responce(02,"Error",ex.Message);
+            }
+        }
+
         public Responce login(LoginDto loginDto)
         {
             try

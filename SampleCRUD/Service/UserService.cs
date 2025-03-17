@@ -7,5 +7,7 @@ namespace SampleCRUD.Service
 
         Responce addUser(User user);
         Responce login(LoginDto loginDto);
+
+        Responce getAllUser();
     }
 }
