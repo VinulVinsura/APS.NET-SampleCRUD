@@ -109,6 +109,8 @@ namespace SampleCRUD.Service.Impl
 
 
             var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiresInMinutes"]!)),
                 signingCredentials: creds

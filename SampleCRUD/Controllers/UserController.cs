@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SampleCRUD.Model;
 using SampleCRUD.Service;
@@ -40,7 +41,10 @@ namespace SampleCRUD.Controllers
             return BadRequest(responce);
         }
 
+
+        
         [HttpGet("get-all-users")]
+        [Authorize]
         public IActionResult getAll() 
         { 
            Responce responce= _userService.getAllUser();

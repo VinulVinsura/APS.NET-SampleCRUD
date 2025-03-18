@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SampleCRUD.Model;
@@ -19,6 +20,7 @@ namespace SampleCRUD.Controllers
         }
 
         [HttpGet("get-all")]
+        [Authorize]
         public IActionResult Get() 
         {
             Responce responce = _invoiceService.getAll();
@@ -31,6 +33,7 @@ namespace SampleCRUD.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize]
         public IActionResult addInvoice(Invoice invoice)
         {
             if (invoice == null) { 
@@ -45,6 +48,7 @@ namespace SampleCRUD.Controllers
         }
 
         [HttpGet("get-invoice-byId/{Id}")]
+        [Authorize]
         public IActionResult getAllInvoiceById(int Id) 
         {
 
@@ -58,6 +62,7 @@ namespace SampleCRUD.Controllers
         }
 
         [HttpDelete("delete-byId/{Id}")]
+        [Authorize]
         public IActionResult deleteById(int Id)
         {
 
@@ -71,6 +76,7 @@ namespace SampleCRUD.Controllers
         }
 
         [HttpPut("update/{Id}")]
+        [Authorize]
         public IActionResult updateInvoice(int Id, Invoice invoice)
         {
             Responce responce = _invoiceService.updateInvoice(Id,invoice);
